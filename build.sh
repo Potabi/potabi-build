@@ -66,7 +66,7 @@ build(){
     -c "Potabi Live User" -d "/usr/home/${liveuser}"\
     -g wheel -G operator -m -s /bin/tcsh -k /usr/share/skel -w none
 
-    chroot ${release} su ${liveuser} -c "mkdir -p /usr/home/${liveuser}/Desktop ${liveuser}/Documents ${liveuser}/Downloads ${liveuser}/Music ${liveuser}/Pictures ${liveuser}/Projects ${liveuser}/Videos"
+    chroot ${release} su root -c "mkdir -pv /home/${liveuser}/Desktop /home/${liveuser}/Documents /home/${liveuser}/Downloads /home/${liveuser}/Music /home/${liveuser}/Pictures /home/${liveuser}/Projects /home/${liveuser}/Videos"
 
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
