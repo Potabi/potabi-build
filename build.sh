@@ -22,6 +22,7 @@ cleanup(){
 setup(){
     # Make directories
     mkdir -pv ${livecd} ${base} ${iso} ${software} ${base} ${release} ${cdroot}
+    mkdir -pv ${release}/etc
 
     # Create and mount pool
     rm -f ${livecd}/pool.img || true
