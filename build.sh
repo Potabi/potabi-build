@@ -96,8 +96,7 @@ build(){
     fi
 
     # Add login.conf
-    cp -R boot/ ${cdroot}/boot/
-    mkdir ${cdroot}/etc
+    cp -R ${cwd}/src/boot/ ${release}/boot/
 }
 
 image(){
