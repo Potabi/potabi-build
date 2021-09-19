@@ -13,10 +13,10 @@ export cwd="`realpath | sed 's|/scripts||g'`"
 . ${cwd}/conf/general.conf
 
 cleanup(){
-    umount ${release}
-    mdconfig -d -u 0
-    rm -rf ${livecd}/pool.img
-    rm -rf ${livecd}
+    umount ${release} || true
+    mdconfig -d -u 0 || true
+    rm -rf ${livecd}/pool.img || true
+    rm -rf ${livecd} || true
 }
 
 setup(){
