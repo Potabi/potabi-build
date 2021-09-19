@@ -37,8 +37,14 @@ setup(){
 }
 
 build(){
+    # Add and extract base/kernel into ${release}
+    cd ${base}
+    fetch https://github.com/Potabi/release/releases/download/${version}-base/base.txz
+    fetch https://github.com/Potabi/release/releases/download/${version}-base/kernel.txz
+    tar -zxvf base.txz -C ${release}
+    tar -zxvf kernel.txz -C ${release}
+
     # Add base items
-    mkdir -pv ${release}/etc ${release}/dev
     touch ${release}/etc/fstab
     mkdir -pv ${release}/cdrom
 
