@@ -22,7 +22,6 @@ cleanup(){
 setup(){
     # Make directories
     mkdir -pv ${livecd} ${base} ${iso} ${software} ${base} ${release} ${cdroot}
-    mkdir -pv ${release}/etc
 
     # Create and mount pool
     rm -f ${livecd}/pool.img || true
@@ -37,11 +36,11 @@ setup(){
 
 build(){
     # Add base items
+    mkdir -pv ${release}/etc 
     touch ${release}/etc/fstab
     mkdir -pv ${release}/cdrom
 
     # Add packages
-    mkdir -pv ${release}/etc 
     cp /etc/resolv.conf ${release}/etc/resolv.conf
     mkdir -pv ${release}/var/cache/pkg
     mount_nullfs ${software} ${release}/var/cache/pkg
