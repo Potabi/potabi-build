@@ -36,7 +36,7 @@ setup(){
 
 build(){
     # Add base items
-    mkdir -pv ${release}/etc 
+    mkdir -pv ${release}/etc ${release}/dev
     touch ${release}/etc/fstab
     mkdir -pv ${release}/cdrom
 
