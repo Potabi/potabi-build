@@ -14,6 +14,8 @@ export cwd="`realpath | sed 's|/scripts||g'`"
 
 cleanup(){
     umount ${release} || true
+    umount ${release}/dev || true
+    umount ${release}/var/cache/pkg/ || true
     mdconfig -d -u 0 || true
     rm -rf ${livecd}/pool.img || true
     rm -rf ${livecd} || true
