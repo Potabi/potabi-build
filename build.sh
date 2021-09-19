@@ -56,7 +56,7 @@ build(){
 
     # Add live user
     chroot ${release} pw useradd ${liveuser} \
-    -c "GhostBSD Live User" -d "/usr/home/${liveuser}"\
+    -c "Potabi Live User" -d "/usr/home/${liveuser}"\
     -g wheel -G operator -m -s /bin/tcsh -k /usr/share/skel -w none
 
     chroot ${release} su ${liveuser} -c "mkdir -p /usr/home/${liveuser}/Desktop ${liveuser}/Documents ${liveuser}/Downloads ${liveuser}/Music ${liveuser}/Pictures ${liveuser}/Projects ${liveuser}/Videos"
