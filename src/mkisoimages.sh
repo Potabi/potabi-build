@@ -23,8 +23,6 @@
 # extra-bits-dir, if provided, contains additional files to be merged
 # into base-bits-dir as part of making the image.
 
-set -e
-
 if [ -z $ETDUMP ]; then
     ETDUMP=etdump
 fi
@@ -42,12 +40,22 @@ if [ "$1" = "-b" ]; then
     # This is highly x86-centric and will be used directly below.
     bootable="-o bootimage=i386;$BASEBITSDIR/boot/cdboot -o no-emul-boot"
 
-    # Make EFI system partition.
-    espfilename=$(mktemp /tmp/efiboot.XXXXXX)
-    # ESP file size in KB.
-    espsize="2048"
-    make_esp_file ${espfilename} ${espsize} ${BASEBITSDIR}/boot/loader.efi
-    bootable="$bootable -o bootimage=i386;${espfilename} -o no-emul-boot -o platformid=efi"
+    # Make EFI system partition (should be done with makefs in the future)
+    dd if=/dev/zero of=efiboot.img bs=4k count=200
+    device=`mdconfig -a -t vnode -f efiboot.img`
+    newfs_msdos -F 12 -m 0xf8 /dev/$device
+    mkdir efi
+    mount -t msdosfs /dev/$device efi
+    mkdir -p efi/efi/boot
+    if [ "${arch}" = "i386" ] ; then
+      cp -p "$BASEBITSDIR/boot/loader.efi" efi/efi/boot/bootia32.efi
+    else
+      cp -p "$BASEBITSDIR/boot/loader.efi" efi/efi/boot/bootx64.efi
+    fi
+    umount efi
+    rmdir efi
+    mdconfig -d -u $device
+    bootable="$bootable -o bootimage=i386;efiboot.img -o no-emul-boot -o platformid=efi"
 
     shift
 else
@@ -63,11 +71,11 @@ fi
 LABEL=`echo "$1" | tr '[:lower:]' '[:upper:]'`; shift
 NAME="$1"; shift
 
-publisher="The GhostBSD Project.  https://www.GhostBSD.org/"
+publisher="The Potabi Foundation"
 echo "/dev/iso9660/$LABEL / cd9660 ro 0 0" > "$BASEBITSDIR/etc/fstab"
-$MAKEFS -t cd9660 $bootable -o rockridge -o label="$LABEL" -o publisher="$publisher" "$NAME" "$@"
+$MAKEFS -t cd9660 $bootable -o rockridge -o label="$LABEL" -o publisher="$publisher" "$NAME" "$@" $OVERLAY_DIR
 rm -f "$BASEBITSDIR/etc/fstab"
-rm -f ${espfilename}
+rm -f efiboot.img
 
 if [ "$bootable" != "" ]; then
     # Look for the EFI System Partition image we dropped in the ISO image.
@@ -86,8 +94,8 @@ if [ "$bootable" != "" ]; then
     $MKIMG -s gpt \
         --capacity $imgsize \
         -b "$BASEBITSDIR/boot/pmbr" \
-        -p freebsd-boot:="$BASEBITSDIR/boot/isoboot" \
         $espparam \
+        -p freebsd-boot:="$BASEBITSDIR/boot/isoboot" \
         -o hybrid.img
 
     # Drop the PMBR, GPT, and boot code into the System Area of the ISO.
