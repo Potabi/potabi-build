@@ -66,7 +66,7 @@ build(){
     -c "Potabi Live User" -d "/usr/home/${liveuser}"\
     -g wheel -G operator -m -s /bin/tcsh -k /usr/share/skel -w none
 
-    chroot ${release} su ${liveuser} -c "mkdir -p /usr/home/${liveuser}/Desktop ${liveuser}/Documents ${liveuser}/Downloads ${liveuser}/Music ${liveuser}/Pictures ${liveuser}/Projects ${liveuser}/Videos"
+    mkdir -pv ${release}/home/${release}/home/${liveuser}/Desktop ${release}/home/${liveuser}/Documents ${release}/home/${liveuser}/Downloads ${release}/home/${liveuser}/Music ${release}/home/${liveuser}/Pictures ${release}/home/${liveuser}/Projects ${release}/home/${liveuser}/Videos
 
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
@@ -82,16 +82,16 @@ build(){
     fi
 
     if [ "${desktop}" == "mate" ] ; then
-        echo "exec ck-launch-session mate-session" >> ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session mate-session" >> ${release}/usr/home/${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session mate-session" > ${release}/root/.xinitrc
     elif [ "${desktop}" == "xfce" ] ; then
-        echo "exec ck-launch-session startxfce4" > ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session startxfce4" > ${release}/usr/home/${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session startxfce4" > ${release}/root/.xinitrc
     elif [ "${desktop}" == "cinnamon" ] ; then
-        echo "exec ck-launch-session cinnamon-session" > ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session cinnamon-session" > ${release}/usr/home/${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session cinnamon-session" > ${release}/root/.xinitrc
     elif [ "${desktop}" == "kde" ] ; then
-        echo "exec ck-launch-session startplasma-x11"> ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session startplasma-x11"> ${release}/usr/home/${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session startplasma-x11" > ${release}/root/.xinitrc
     fi
 
