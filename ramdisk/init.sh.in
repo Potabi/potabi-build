@@ -49,10 +49,9 @@ zfs set compression=gzip livecd
 zfs set primarycache=none livecd
 
 echo "==> Replicate system image to swap-based memdisk"
-zfs send -c -e furybsd | dd status=progress bs=1M | zfs recv -F livecd
+zfs send -c -e potabi | dd status=progress bs=1M | zfs recv -F livecd
 
 mount -t devfs devfs /livecd/dev
-chroot /livecd /usr/local/bin/furybsd-init-helper
 
 kenv init_shell="/rescue/sh"
 exit 0
