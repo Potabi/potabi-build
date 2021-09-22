@@ -37,7 +37,7 @@ setup(){
     # gpart add -t freebsd-ufs md0
     # bsdlabel -w md0 auto
     # newfs -U md0a
-    mount /dev/md0a ${release}
+    # mount /dev/md0a ${release}
 }
 
 build(){
