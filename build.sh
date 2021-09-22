@@ -29,10 +29,15 @@ setup(){
     rm -f ${livecd}/pool.img || true
     truncate -s 6g ${livecd}/pool.img
     mdconfig -a -t vnode -f ${livecd}/pool.img -u 0
-    gpart create -s GPT md0
-    gpart add -t freebsd-ufs md0
-    bsdlabel -w md0 auto
-    newfs -U md0a
+    zpool create potabi /dev/md0
+    zfs set mountpoint=${release} potabi 
+    zfs set compression=gzip-6 potabi
+
+    # UFS alternative code (just in case)
+    # gpart create -s GPT md0
+    # gpart add -t freebsd-ufs md0
+    # bsdlabel -w md0 auto
+    # newfs -U md0a
     mount /dev/md0a ${release}
 }
 
@@ -97,6 +102,8 @@ build(){
 
     # Add login.conf
     cp -R ${cwd}/src/boot/ ${release}/boot/
+    # Borrowed line from GhostBSD-build
+    cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
 }
 
 image(){
