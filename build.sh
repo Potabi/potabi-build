@@ -125,7 +125,7 @@ build(){
     touch "${ramdisk_root}/etc/fstab"
     install -o root -g wheel -m 755 "${cwd}/ramdisk/rc.in" "${ramdisk_root}/etc/rc"
     cp ${cwd}/src/boot/login.conf ${ramdisk_root}/etc/login.conf
-    makefs -M 2 -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
+    makefs -M 10M -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
     gzip "${cdroot}/data/ramdisk.ufs"
     rm -rf "${ramdisk_root}"
 }
