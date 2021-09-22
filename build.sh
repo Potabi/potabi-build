@@ -108,7 +108,7 @@ build(){
 
     # Add login.conf
     cp -R ${cwd}/src/boot/ ${cdroot}/boot/
-    cp ${cwd}/src/boot/login.conf ${release}/etc/login.conf
+    # cp ${cwd}/src/boot/login.conf ${release}/etc/login.conf
     mkdir -pv ${cdroot}/etc
     # Borrowed line from GhostBSD-build
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
@@ -124,7 +124,7 @@ build(){
     mkdir "${ramdisk_root}/etc"
     touch "${ramdisk_root}/etc/fstab"
     install -o root -g wheel -m 755 "${cwd}/ramdisk/rc.in" "${ramdisk_root}/etc/rc"
-    cp ${release}/etc/login.conf ${ramdisk_root}/etc/login.conf
+    cp ${cwd}/src/boot/login.conf ${ramdisk_root}/etc/login.conf
     makefs -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
     gzip "${cdroot}/data/ramdisk.ufs"
     rm -rf "${ramdisk_root}"
