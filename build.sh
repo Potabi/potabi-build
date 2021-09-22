@@ -72,6 +72,13 @@ build(){
 
     mkdir -pv ${release}/home/${liveuser}/Desktop ${release}/home/${liveuser}/Documents ${release}/home/${liveuser}/Downloads ${release}/home/${liveuser}/Music ${release}/home/${liveuser}/Pictures ${release}/home/${liveuser}/Projects ${release}/home/${liveuser}/Videos
 
+    # Uzips
+    umount ${release}/dev
+    install -o root -g wheel -m 755 -d "${cdroot}"
+    mkdir -pv "${cdroot}/data"
+    zfs snapshot potabi@clean
+    zfs send -c -e potabi@clean | dd of=/usr/local/potabi-build/cdroot/data/system.img status=progress bs=1M
+
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
     
@@ -100,12 +107,12 @@ build(){
     fi
 
     # Add login.conf
-    cp -R ${cwd}/src/boot/ ${release}/boot/
+    cp -R ${cwd}/src/boot/ ${cdroot}/boot/
+    mkdir -pv ${cdroot}/etc
     # Borrowed line from GhostBSD-build
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
     # Borrowed Ramdisk from GhostBSD-Build
     ramdisk_root="${cdroot}/data/ramdisk"
-    mkdir -pv ${cdroot}/data
     mkdir -pv ${ramdisk_root}
     cd "${release}"
     tar -cf - rescue | tar -xf - -C "${ramdisk_root}"
