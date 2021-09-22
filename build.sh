@@ -26,7 +26,6 @@ setup(){
     mkdir -pv ${livecd} ${base} ${iso} ${software} ${base} ${release} ${cdroot}
 
     # Create and mount pool
-    rm -f ${livecd}/pool.img || true
     truncate -s 6g ${livecd}/pool.img
     mdconfig -a -t vnode -f ${livecd}/pool.img -u 0
     zpool create potabi /dev/md0
