@@ -108,6 +108,7 @@ build(){
 
     # Add login.conf
     cp -R ${cwd}/src/boot/ ${cdroot}/boot/
+    cp ${cwd}/src/boot/login.conf ${release}/etc/login.conf
     mkdir -pv ${cdroot}/etc
     # Borrowed line from GhostBSD-build
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
