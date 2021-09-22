@@ -104,10 +104,27 @@ build(){
     cp -R ${cwd}/src/boot/ ${release}/boot/
     # Borrowed line from GhostBSD-build
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
+    # Borrowed Ramdisk from GhostBSD-Build
+    ramdisk_root="${cdroot}/data/ramdisk"
+    mkdir -pv ${cdroot}/data
+    mkdir -pv ${ramdisk_root}
+    cd "${release}"
+    tar -cf - rescue | tar -xf - -C "${ramdisk_root}"
+    cd "${cwd}"
+    install -o root -g wheel -m 755 "${cwd}/ramdisk/init.sh.in" "${ramdisk_root}/init.sh"
+    sed "s/@VOLUME@/POTABI/" "${cwd}/ramdisk/init.sh.in" > "${ramdisk_root}/init.sh"
+    mkdir "${ramdisk_root}/dev"
+    mkdir "${ramdisk_root}/etc"
+    touch "${ramdisk_root}/etc/fstab"
+    install -o root -g wheel -m 755 "${cwd}/ramdisk/rc.in" "${ramdisk_root}/etc/rc"
+    cp ${release}/etc/login.conf ${ramdisk_root}/etc/login.conf
+    makefs -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
+    gzip "${cdroot}/data/ramdisk.ufs"
+    rm -rf "${ramdisk_root}"
 }
 
 image(){
-    sh ${cwd}/src/mkisoimages.sh -b ${label} ${isopath} ${release}
+    sh ${cwd}/src/mkisoimages.sh -b ${label} ${isopath} ${cdroot}
     cd ${iso}
     echo "Build completed"
     ls
