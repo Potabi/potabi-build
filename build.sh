@@ -112,6 +112,10 @@ build(){
     mkdir -pv ${cdroot}/etc
     # Borrowed line from GhostBSD-build
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
+    # Uzip (From FuryBSD-LiveCD)
+    install -o root -g wheel -m 755 -d "${cdroot}"
+    cd ${cwd} && zpool export furybsd && while zpool status furybsd >/dev/null; do :; done 2>/dev/null
+    mkuzip -S -d -o "${cdroot}/data/system.uzip" "${livecd}/pool.img"
     # Borrowed Ramdisk from GhostBSD-Build
     ramdisk_root="${cdroot}/data/ramdisk"
     mkdir -pv ${ramdisk_root}
