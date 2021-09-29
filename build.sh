@@ -126,7 +126,7 @@ build(){
 
     # Boot
     cd ${release}
-    tar -cf - boot | tar -xf - -c ${cdroot}
+    tar -cf - boot | tar -xf - -C ${cdroot}
     cp -R ${cwd}/src/boot/ ${cdroot}/boot/
     mkdir -pv ${cdroot}/etc
     cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
