@@ -72,13 +72,6 @@ build(){
 
     mkdir -pv ${release}/home/${liveuser}/Desktop ${release}/home/${liveuser}/Documents ${release}/home/${liveuser}/Downloads ${release}/home/${liveuser}/Music ${release}/home/${liveuser}/Pictures ${release}/home/${liveuser}/Projects ${release}/home/${liveuser}/Videos
 
-    # Uzips
-    umount ${release}/dev
-    install -o root -g wheel -m 755 -d "${cdroot}"
-    mkdir -pv "${cdroot}/data"
-    zfs snapshot potabi@clean
-    zfs send -c -e potabi@clean | dd of=/usr/local/potabi-build/cdroot/data/system.img status=progress bs=1M
-
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
     
@@ -106,21 +99,15 @@ build(){
         echo "exec ck-launch-session startplasma-x11" > ${release}/root/.xinitrc
     fi
 
-    # WARNING: NIGHTMARE AHEAD (This looks ugly but it's actually rather simple)
-
-    # Add login.conf
-    cp -R ${cwd}/src/boot/ ${cdroot}/boot/
-    # Add the rest of the boot
-    cp -R ${release}/boot/ ${cdroot}/boot/
-    # cp ${cwd}/src/boot/login.conf ${release}/etc/login.conf
-    mkdir -pv ${cdroot}/etc
-    # Borrowed line from GhostBSD-build
-    # cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
-    # Uzip (From FuryBSD-LiveCD)
+    # Uzip Ramdisk and Boot code borrowed from GhostBSD
+    # Uzips
+    umount ${release}/dev
     install -o root -g wheel -m 755 -d "${cdroot}"
-    # cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
-    mkuzip -S -d -o "${cdroot}/data/system.uzip" "${livecd}/pool.img"
-    # Borrowed Ramdisk from GhostBSD-Build
+    mkdir -pv "${cdroot}/data"
+    zfs snapshot potabi@clean
+    zfs send -c -e potabi@clean | dd of=/usr/local/potabi-build/cdroot/data/system.img status=progress bs=1M
+
+    # Ramdisk
     ramdisk_root="${cdroot}/data/ramdisk"
     mkdir -pv ${ramdisk_root}
     cd "${release}"
@@ -136,6 +123,13 @@ build(){
     makefs -M 10m -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
     gzip "${cdroot}/data/ramdisk.ufs"
     rm -rf "${ramdisk_root}"
+
+    # Boot
+    cd ${release}
+    tar -cf - boot | tar -xf - -c ${cdroot}
+    cp -R ${cwd}/src/boot/ ${cdroot}/boot/
+    mkdir -pv ${cdroot}/etc
+    cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
 }
 
 image(){
