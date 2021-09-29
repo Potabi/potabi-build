@@ -106,8 +106,12 @@ build(){
         echo "exec ck-launch-session startplasma-x11" > ${release}/root/.xinitrc
     fi
 
+    # WARNING: NIGHTMARE AHEAD (This looks ugly but it's actually rather simple)
+
     # Add login.conf
     cp -R ${cwd}/src/boot/ ${cdroot}/boot/
+    # Add the rest of the boot
+    cp -R ${release}/boot/ ${cdroot}/boot/
     # cp ${cwd}/src/boot/login.conf ${release}/etc/login.conf
     mkdir -pv ${cdroot}/etc
     # Borrowed line from GhostBSD-build
