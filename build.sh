@@ -99,6 +99,10 @@ build(){
         echo "exec ck-launch-session startplasma-x11" > ${release}/root/.xinitrc
     fi
 
+    # Extra configuration (borrowed from GhostBSD builder)
+    echo "gop set 0" >> ${release}/boot/loader.rc.local
+    chroot ${release} touch /boot/entropy
+
     # Uzip Ramdisk and Boot code borrowed from GhostBSD
     # Uzips
     umount ${release}/dev
@@ -115,11 +119,11 @@ build(){
     cd "${cwd}"
     install -o root -g wheel -m 755 "${cwd}/ramdisk/init.sh.in" "${ramdisk_root}/init.sh"
     sed "s/@VOLUME@/POTABI/" "${cwd}/ramdisk/init.sh.in" > "${ramdisk_root}/init.sh"
-    mkdir "${ramdisk_root}/dev"
-    mkdir "${ramdisk_root}/etc"
+    mkdir -pv "${ramdisk_root}/dev"
+    mkdir -pv "${ramdisk_root}/etc"
     touch "${ramdisk_root}/etc/fstab"
     install -o root -g wheel -m 755 "${cwd}/ramdisk/rc.in" "${ramdisk_root}/etc/rc"
-    cp ${cwd}/src/boot/loader.conf ${ramdisk_root}/etc/loader.conf
+    cp ${release}/etc/login.conf ${ramdisk_root}/etc/login.conf
     makefs -M 10m -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
     gzip "${cdroot}/data/ramdisk.ufs"
     rm -rf "${ramdisk_root}"

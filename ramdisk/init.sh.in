@@ -11,7 +11,8 @@ echo "==> Remount rootfs as read-write"
 mount -u -w /
 
 echo "==> Make mountpoints"
-mkdir -p /cdrom
+makedir=${mkdir:-"/cdrom"}
+mkdir -pv ${makedir}
 
 echo "Waiting for Potabi media to initialize"
 while : ; do
@@ -20,7 +21,7 @@ while : ; do
 done
 
 echo "==> Mount cdrom"
-mount_cd9660 /dev/iso9660/Potabi /cdrom
+mount_cd9660 /dev/iso9660/@VOLUME@ /cdrom
 mdconfig -f /cdrom/data/system.uzip -u 1
 zpool import potabi -o readonly=on
 
