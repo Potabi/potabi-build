@@ -25,7 +25,8 @@
 
 set -e
 
-. install-boot.sh
+export cwd="`realpath | sed 's|/scripts||g'`"
+. ${cwd}/src/install-boot.sh
 
 if [ -z $ETDUMP ]; then
     ETDUMP=etdump

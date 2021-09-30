@@ -137,6 +137,7 @@ build(){
 }
 
 image(){
+    cd ${cwd}
     sh ${cwd}/src/mkisoimages.sh -b ${label} ${isopath} ${cdroot}
     cd ${iso}
     echo "Build completed"
