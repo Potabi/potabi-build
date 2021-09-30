@@ -1,29 +1,30 @@
 #!/rescue/sh
 
+set -e
+
 PATH="/rescue"
 
 if [ "`ps -o command 1 | tail -n 1 | ( read c o; echo ${o} )`" = "-s" ]; then
-	echo "==> Running in single-user mode"
-	SINGLE_USER="true"
+  echo "==> Running in single-user mode"
+  SINGLE_USER="true"
 fi
 
 echo "==> Remount rootfs as read-write"
 mount -u -w /
 
-echo "==> Make mountpoints"
-makedir=${mkdir:-"/cdrom"}
-mkdir -pv ${makedir}
+makedir=${makedir:-"/cdrom"}
+
+echo "==> Make mountpoints /cdrom"
+mkdir -p ${makedir}
 
 echo "Waiting for Potabi media to initialize"
 while : ; do
-    [ -e "/dev/iso9660/Potabi" ] && echo "found /dev/iso9660/Potabi" && break
-    sleep 1
+    [ -e "/dev/iso9660/POTABI" ] && echo "found /dev/iso9660/POTABI" && sleep 2 && break
+    sleep 2
 done
 
 echo "==> Mount cdrom"
 mount_cd9660 /dev/iso9660/@VOLUME@ /cdrom
-mdconfig -f /cdrom/data/system.uzip -u 1
-zpool import potabi -o readonly=on
 
 if [ "$SINGLE_USER" = "true" ]; then
         echo "Starting interactive shell in temporary rootfs ..."
@@ -35,24 +36,18 @@ x=3163787264
 y=$(sysctl -n hw.physmem)
 echo "Required memory ${x} for memdisk"
 echo "Detected memory ${y} for memdisk"
-if [ $x -gt $y ] ; then 
-    echo "Potabi requires 4GB of memory for memdisk, and operation!"
-    echo "Type exit, and press enter after entering the rescue shell to power off."
-    exit 1
+if [ $x -gt $y ] ; then
+  echo "Potabi requires 4GB of memory for memdisk, and operation!"
+  echo "Type exit, and press enter after entering the rescue shell to power off."
+  exit 1
 fi
 
 echo "==> Mount swap-based memdisk"
-mdconfig -a -t swap -s 3g -u 2 >/dev/null 2>/dev/null
-gpart create -s GPT md2 >/dev/null 2>/dev/null
-gpart add -t freebsd-zfs md2 >/dev/null 2>/dev/null
-zpool create livecd /dev/md2p1 >/dev/null 2>/dev/null
-zfs set compression=gzip livecd 
+mdconfig -a -t swap -s 3g -u 1 >/dev/null 2>/dev/null
+zpool create livecd /dev/md1 >/dev/null 2>/dev/null
+zfs set compression=gzip livecd
 zfs set primarycache=none livecd
-
 echo "==> Replicate system image to swap-based memdisk"
-zfs send -c -e potabi | dd status=progress bs=1M | zfs recv -F livecd
-
-mount -t devfs devfs /livecd/dev
-
+dd if=/cdrom/data/system.img status=progress bs=1M | zfs recv -F livecd
 kenv init_shell="/rescue/sh"
 exit 0
