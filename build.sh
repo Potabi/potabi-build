@@ -41,8 +41,12 @@ setup(){
 }
 
 build(){
+    # Base Preconfig
+    mkdir -pv ${release}/etc
+    
     # Add and extract base/kernel into ${release}
     cd ${base}
+    # TODO: Switch with CoreNGS release
     fetch https://github.com/Potabi/release/releases/download/${version}-base/base.txz
     fetch https://github.com/Potabi/release/releases/download/${version}-base/kernel.txz
     tar -zxvf base.txz -C ${release}
@@ -71,6 +75,10 @@ build(){
     -g wheel -G operator -m -s /bin/tcsh -k /usr/share/skel -w none
 
     mkdir -pv ${release}/home/${liveuser}/Desktop ${release}/home/${liveuser}/Documents ${release}/home/${liveuser}/Downloads ${release}/home/${liveuser}/Music ${release}/home/${liveuser}/Pictures ${release}/home/${liveuser}/Projects ${release}/home/${liveuser}/Videos
+
+    # Other configs
+    chroot ${release} mv /usr/local/etc/devd/automount_devd.conf /usr/local/etc/devd/automount_devd.conf.skip
+    chroot ${release} touch /boot/entropy
 
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
@@ -101,7 +109,6 @@ build(){
 
     # Extra configuration (borrowed from GhostBSD builder)
     echo "gop set 0" >> ${release}/boot/loader.rc.local
-    chroot ${release} touch /boot/entropy
 
     # Uzip Ramdisk and Boot code borrowed from GhostBSD
     # Uzips
