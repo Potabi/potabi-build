@@ -89,22 +89,17 @@ build(){
         sed -i '' "s@#user-session=default@user-session=xfce@" ${release}/usr/local/etc/lightdm/lightdm.conf
     elif [ "${desktop}" == "cinnamon" ] ; then
         sed -i '' "s@#user-session=default@user-session=cinnamon@" ${release}/usr/local/etc/lightdm/lightdm.conf
-    elif [ "${desktop}" == "kde" ] ; then
-        sed -i '' "s@#user-session=default@user-session=plasma@" ${release}/usr/local/etc/lightdm/lightdm.conf
     fi
 
     if [ "${desktop}" == "mate" ] ; then
         echo "exec ck-launch-session mate-session" >> ${release}/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session mate-session" > ${release}/root/.xinitrc
+        echo "exec ck-launch-session mate-session" >> ${release}/root/.xinitrc
     elif [ "${desktop}" == "xfce" ] ; then
-        echo "exec ck-launch-session startxfce4" > ${release}/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session startxfce4" > ${release}/root/.xinitrc
+        echo "exec ck-launch-session startxfce4" >> ${release}/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session startxfce4" >> ${release}/root/.xinitrc
     elif [ "${desktop}" == "cinnamon" ] ; then
-        echo "exec ck-launch-session cinnamon-session" > ${release}/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session cinnamon-session" > ${release}/root/.xinitrc
-    elif [ "${desktop}" == "kde" ] ; then
-        echo "exec ck-launch-session startplasma-x11"> ${release}/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session startplasma-x11" > ${release}/root/.xinitrc
+        echo "exec ck-launch-session cinnamon-session" >> ${release}/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session cinnamon-session" >> ${release}/root/.xinitrc
     fi
 
     # Extra configuration (borrowed from GhostBSD builder)
