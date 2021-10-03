@@ -1,6 +1,8 @@
 mate
+xorg
 lightdm-gtk-greeter
 mate-icon-theme
 firefox
 zenity
 sysctlview
+xterm
