@@ -43,7 +43,7 @@ if [ $x -gt $y ] ; then
 fi
 
 echo "==> Mount swap-based memdisk"
-mdconfig -a -t swap -s 3g -u 1 >/dev/null 2>/dev/null
+mdconfig -a -t swap -u 1 >/dev/null 2>/dev/null
 zpool create livecd /dev/md1 >/dev/null 2>/dev/null
 zfs set compression=gzip livecd
 zfs set primarycache=none livecd
