@@ -32,7 +32,7 @@ if [ "$SINGLE_USER" = "true" ]; then
 fi
 
 # Ensure the system has more than enough memory for memdisk
-x=3163787264
+x=0
 y=$(sysctl -n hw.physmem)
 echo "Required memory ${x} for memdisk"
 echo "Detected memory ${y} for memdisk"
