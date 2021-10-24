@@ -1,0 +1,3 @@
+[submodule "uzip"]
+	path = uzip
+	url = https://github.com/potabi/uzip
