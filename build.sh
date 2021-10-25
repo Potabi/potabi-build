@@ -47,8 +47,8 @@ build(){
     # Add and extract base/kernel into ${release}
     cd ${base}
     # TODO: Switch with CoreNGS release
-    fetch https://github.com/Potabi/release/releases/download/${base}-base/base.txz
-    fetch https://github.com/Potabi/release/releases/download/${base}-base/kernel.txz
+    fetch https://github.com/Potabi/release/releases/download/${basev}-base/base.txz
+    fetch https://github.com/Potabi/release/releases/download/${basev}-base/kernel.txz
     tar -zxvf base.txz -C ${release}
     tar -zxvf kernel.txz -C ${release}
 
