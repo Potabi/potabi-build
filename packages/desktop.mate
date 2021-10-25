@@ -6,6 +6,6 @@ firefox
 zenity
 sysctlview
 xterm
-node16
+node
 npm
 doas
