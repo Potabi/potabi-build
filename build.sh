@@ -62,6 +62,22 @@ build(){
     mount_nullfs ${software} ${release}/var/cache/pkg
     mount -t devfs devfs ${release}/dev
     cat ${cwd}/packages/${tag}.${desktop} | xargs pkg -c ${release} install -y
+    
+    # Add software via uzip
+    while read -r p; do
+        sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
+    done <"${cwd}"/settings/overlays.common
+    if [ -f "${cwd}/settings/${desktop}.overlay" ] ; then
+        while read -r p; do
+        sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
+        done <"${cwd}/settings/${desktop}.overlay"
+    fi
+    cd -
+
+    # Add extra compiles
+    . ${cwd}/src/software.sh 
+    setup_software
+
     rm ${release}/etc/resolv.conf
     umount ${release}/var/cache/pkg
     
