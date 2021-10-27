@@ -66,7 +66,7 @@ build(){
     # Add software via uzip
     while read -r p; do
         sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
-    done <"${cwd}"/settings/overlays.common
+    done <"${cwd}"/packages/overlays.common
     if [ -f "${cwd}/settings/${desktop}.overlay" ] ; then
         while read -r p; do
         sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
