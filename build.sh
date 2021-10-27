@@ -64,6 +64,7 @@ build(){
     cat ${cwd}/packages/${tag}.${desktop} | xargs pkg -c ${release} install -y
     
     # Add software via uzip
+    chmod ${release} mkdir -pv /usr/local/general /usr/local/potabi
     while read -r p; do
         sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
     done <"${cwd}"/packages/overlays.common
