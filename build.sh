@@ -101,7 +101,7 @@ build(){
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
     
     if [ "${desktop}" == "lumina" ] ; then
-        sed -i '' "s@#user-session=default@user-session=lumina-desktop@" ${release}/usr/local/etc/lightdm/lightdm.conf
+        sed -i '' "s@#user-session=default@user-session=lumina@" ${release}/usr/local/etc/lightdm/lightdm.conf
     elif [ "${desktop}" == "xfce" ] ; then
         sed -i '' "s@#user-session=default@user-session=xfce@" ${release}/usr/local/etc/lightdm/lightdm.conf
     elif [ "${desktop}" == "cinnamon" ] ; then
@@ -109,8 +109,8 @@ build(){
     fi
 
     if [ "${desktop}" == "lumina" ] ; then
-        echo "exec ck-launch-session lumina-desktop" >> ${release}/usr/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session lumina-desktop" >> ${release}/root/.xinitrc
+        echo "exec ck-launch-session start-lumina-desktop" >> ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session start-lumina-desktop" >> ${release}/root/.xinitrc
     elif [ "${desktop}" == "xfce" ] ; then
         echo "exec ck-launch-session startxfce4" >> ${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session startxfce4" >> ${release}/root/.xinitrc
