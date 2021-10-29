@@ -66,9 +66,8 @@ build(){
     # Add software via uzip
     mkdir -pv ${release}/usr/local/general ${release}/usr/local/potabi
     while read -r p; do
-        sh -ex "${cwd}/scripts/build-pkg.sh" -m "${cwd}/overlays/uzip/${p}"/manifest -d "${cwd}/overlays/uzip/${p}/files"
+        sh -ex "${cwd}/scripts/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
     done <"${cwd}"/settings/overlays.common
-    cat "${cwd}/settings/packages.common" | sed '/^#/d' | sed '/\!i386/d' | xargs /usr/local/sbin/pkg-static -c "${uzip}" install -y
     while read -r p; do
         /usr/local/sbin/pkg-static -c ${uzip} install -y /var/cache/pkg/"${p}"-0.txz
     done <"${cwd}"/settings/overlays.common
