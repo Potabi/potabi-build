@@ -1,7 +1,7 @@
-mate
+lumina
 xorg
+qt4-imageformats
 lightdm-gtk-greeter
-mate-icon-theme
 firefox
 zenity
 sysctlview

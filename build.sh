@@ -100,21 +100,17 @@ build(){
     # Add desktop environment
     sed -i '' "s@#greeter-session=example-gtk-gnome@greeter-session=slick-greeter@" ${release}/usr/local/etc/lightdm/lightdm.conf
     
-    if [ "${desktop}" == "mate" ] ; then
-        sed -i '' "s@#user-session=default@user-session=mate@" ${release}/usr/local/etc/lightdm/lightdm.conf
+    if [ "${desktop}" == "lumina" ] ; then
+        sed -i '' "s@#user-session=default@user-session=lumina-desktop@" ${release}/usr/local/etc/lightdm/lightdm.conf
     elif [ "${desktop}" == "xfce" ] ; then
         sed -i '' "s@#user-session=default@user-session=xfce@" ${release}/usr/local/etc/lightdm/lightdm.conf
     elif [ "${desktop}" == "cinnamon" ] ; then
         sed -i '' "s@#user-session=default@user-session=cinnamon@" ${release}/usr/local/etc/lightdm/lightdm.conf
     fi
 
-    if [ "${desktop}" == "mate" ] ; then
-        echo "gsettings set org.mate.SettingsDaemon.plugins.housekeeping active true &" > ${release}/usr/home/${liveuser}/.xinitrc
-        echo "gsettings set org.mate.screensaver lock-enabled false &" >> ${release}/usr/home/${liveuser}/.xinitrc
-        echo "gsettings set org.mate.lockdown disable-lock-screen true &" >> ${release}/usr/home/${liveuser}/.xinitrc
-        echo "gsettings set org.mate.lockdown disable-user-switching true &" >> ${release}/usr/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session mate-session" >> ${release}/usr/home/${liveuser}/.xinitrc
-        echo "exec ck-launch-session mate-session" >> ${release}/root/.xinitrc
+    if [ "${desktop}" == "lumina" ] ; then
+        echo "exec ck-launch-session lumina-desktop" >> ${release}/usr/home/${liveuser}/.xinitrc
+        echo "exec ck-launch-session lumina-desktop" >> ${release}/root/.xinitrc
     elif [ "${desktop}" == "xfce" ] ; then
         echo "exec ck-launch-session startxfce4" >> ${release}/home/${liveuser}/.xinitrc
         echo "exec ck-launch-session startxfce4" >> ${release}/root/.xinitrc
