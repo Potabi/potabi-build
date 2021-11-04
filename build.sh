@@ -69,7 +69,7 @@ build(){
         sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
     done <"${cwd}"/packages/overlays.common
     while read -r p; do
-        /usr/local/sbin/pkg-static -c ${uzip} install -y /var/cache/pkg/"${p}"-0.txz
+        /usr/local/sbin/pkg-static -c ${release} install -y /var/cache/pkg/"${p}"-0.txz
     done <"${cwd}"/packages/overlays.common
 
     # Add extra compiles
