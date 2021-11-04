@@ -63,16 +63,17 @@ build(){
     mount -t devfs devfs ${release}/dev
     cat ${cwd}/packages/${tag}.${desktop} | xargs pkg -c ${release} install -y
     
-    # Add software via uzip
+    # Add software overlays 
     mkdir -pv ${release}/usr/local/general ${release}/usr/local/potabi
-    while read -r p; do
-        sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
-    done <"${cwd}"/packages/overlays.common
-    while read -r p; do
-        /usr/local/sbin/pkg-static -c ${release} install -y /var/cache/pkg/"${p}"-0.txz
-    done <"${cwd}"/packages/overlays.common
-
-    # Add extra compiles
+    
+    # Abandoning this plan
+    # while read -r p; do
+    #     sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
+    # done <"${cwd}"/packages/overlays.common
+    # while read -r p; do
+    #     /usr/local/sbin/pkg-static -c ${release} install -y /var/cache/pkg/"${p}"-0.txz
+    # done <"${cwd}"/packages/overlays.common
+    
     . ${cwd}/src/software.sh 
     setup_software
 
