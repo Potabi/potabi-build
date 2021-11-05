@@ -121,13 +121,13 @@ build(){
     echo "gop set 0" >> ${release}/boot/loader.rc.local
 
     # This sucks, but it has to function like this if we don't want it to break all the time
-    echo "Unmounting ${release}/dev - this could take up to 20 seconds"
+    echo "Unmounting ${release}/dev - this could take up to 60 seconds"
     umount ${release}/dev || true
     timer=0
     while [ "$timer" -lt 5000000 ]; do
         timer=$(($timer+1))
     done
-    umount ${release}/dev
+    umount -f ${release}/dev || true
 
     # Uzip Ramdisk and Boot code borrowed from GhostBSD
     # Uzips
