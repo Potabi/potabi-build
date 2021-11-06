@@ -62,6 +62,7 @@ build(){
     mount_nullfs ${software} ${release}/var/cache/pkg
     mount -t devfs devfs ${release}/dev
     cat ${pkgdir}/${tag}.${desktop} | xargs pkg -c ${release} install -y
+    chroot ${release} pkg install -y pkg
     
     # Add software overlays 
     mkdir -pv ${release}/usr/local/general ${release}/usr/local/potabi
