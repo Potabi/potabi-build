@@ -151,7 +151,7 @@ build(){
     tar -cf - boot | tar -xf - -C ${cdroot}
     echo "Boot directory listed as: ${boodir}"
     echo "CDRoot directory listed as: ${cdroot}"
-    cp -R ${boodir} ${cdroot}/boot/
+    cp -r ${boodir}/* ${cdroot}/boot/.
     mkdir -pv ${cdroot}/etc
     cd ${prjdir} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
 }
