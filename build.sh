@@ -61,27 +61,19 @@ build(){
     mkdir -pv ${release}/var/cache/pkg
     mount_nullfs ${software} ${release}/var/cache/pkg
     mount -t devfs devfs ${release}/dev
-    cat ${cwd}/packages/${tag}.${desktop} | xargs pkg -c ${release} install -y
+    cat ${pkgdir}/${tag}.${desktop} | xargs pkg -c ${release} install -y
     
     # Add software overlays 
     mkdir -pv ${release}/usr/local/general ${release}/usr/local/potabi
     
-    # Abandoning this plan
-    # while read -r p; do
-    #     sh -ex "${cwd}/src/build-pkg.sh" -m "${cwd}/uzip/${p}"/manifest -d "${cwd}/uzip/${p}/files"
-    # done <"${cwd}"/packages/overlays.common
-    # while read -r p; do
-    #     /usr/local/sbin/pkg-static -c ${release} install -y /var/cache/pkg/"${p}"-0.txz
-    # done <"${cwd}"/packages/overlays.common
-    
-    . ${cwd}/src/software.sh 
+    . ${srcdir}/software.sh 
     setup_software
 
     rm ${release}/etc/resolv.conf
     umount ${release}/var/cache/pkg
     
     # rc
-    . ${cwd}/src/setuprc.sh
+    . ${srcdir}/setuprc.sh
     setuprc
 
     # Add live user
@@ -141,13 +133,13 @@ build(){
     mkdir -pv ${ramdisk_root}
     cd "${release}"
     tar -cf - rescue | tar -xf - -C "${ramdisk_root}"
-    cd "${cwd}"
-    install -o root -g wheel -m 755 "${cwd}/ramdisk/init.sh.in" "${ramdisk_root}/init.sh"
-    sed "s/@VOLUME@/POTABI/" "${cwd}/ramdisk/init.sh.in" > "${ramdisk_root}/init.sh"
+    cd "${prjdir}"
+    install -o root -g wheel -m 755 "${rmddir}/init.sh.in" "${ramdisk_root}/init.sh"
+    sed "s/@VOLUME@/POTABI/" "${rmddir}/init.sh.in" > "${ramdisk_root}/init.sh"
     mkdir -pv "${ramdisk_root}/dev"
     mkdir -pv "${ramdisk_root}/etc"
     touch "${ramdisk_root}/etc/fstab"
-    install -o root -g wheel -m 755 "${cwd}/ramdisk/rc.in" "${ramdisk_root}/etc/rc"
+    install -o root -g wheel -m 755 "${rmddir}/rc.in" "${ramdisk_root}/etc/rc"
     cp ${release}/etc/login.conf ${ramdisk_root}/etc/login.conf
     makefs -M 10m -b '10%' "${cdroot}/data/ramdisk.ufs" "${ramdisk_root}"
     gzip "${cdroot}/data/ramdisk.ufs"
@@ -156,14 +148,14 @@ build(){
     # Boot
     cd ${release}
     tar -cf - boot | tar -xf - -C ${cdroot}
-    cp -R ${cwd}/src/boot/ ${cdroot}/boot/
+    cp -R ${boodir} ${cdroot}/boot/
     mkdir -pv ${cdroot}/etc
-    cd ${cwd} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
+    cd ${prjdir} && zpool export potabi && while zpool status potabi >/dev/null; do :; done 2>/dev/null
 }
 
 image(){
-    cd ${cwd}
-    sh ${cwd}/src/mkisoimages.sh -b ${label} ${isopath} ${cdroot}
+    cd ${prjdir}
+    sh ${mkidir}/mkiso.${platform}.sh -b ${label} ${isopath} ${cdroot}
     cd ${iso}
     echo "Build completed"
     ls
