@@ -1,4 +1,8 @@
 install_doas(){
+    # EXPERIMENT:
+    ls ${release}/usr/local 
+    exit 1
+    # END EXPERIMENT
     mkdir -pv ${release}/usr/local/etc
     touch ${release}/usr/local/etc/doas.conf
     echo "permit nopass keepenv :wheel" >> ${release}/usr/local/etc/doas.conf
