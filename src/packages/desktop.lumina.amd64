@@ -6,3 +6,7 @@ zenity
 sysctlview
 xterm
 doas
+fd-find
+tealdeer
+rustscan
+kibi
