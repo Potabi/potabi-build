@@ -4,4 +4,5 @@ install_ayras(){
     cd ${release}/usr/local/tmp/ayras
     qmake-qt5 PREFIX=${release}/usr/local LIBPREFIX=${release}/usr/local
     chroot ${release} ls
+    exit 1
 }
