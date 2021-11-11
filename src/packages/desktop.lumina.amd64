@@ -40,6 +40,7 @@ xorgproto
 qt5-buildtools
 qt5-linguist
 qt5-qmake
+qmake
 desktop-file-utils
 gstreamer1-qt5
 gstreamer1-plugins-gl
