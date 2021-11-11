@@ -18,6 +18,7 @@ trueos-libqt5
 qt5-concurrent
 qt5-core
 qt5-dbus
+qt5-declarative
 qt5-gui
 qt5-multimedia
 qt5-network
