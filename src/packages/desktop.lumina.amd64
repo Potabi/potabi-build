@@ -39,7 +39,7 @@ qt5-buildtools
 qt5-linguist
 qt5-qmake
 desktop-file-utils
-gstreamer1-qt
+gstreamer1-qt5
 gstreamer1-plugins-gl
 poppler-qt5
 qt5-printsupport
