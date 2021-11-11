@@ -14,6 +14,7 @@ xcb-util-image
 xcb-util
 libXcursor
 libglvnd
+trueos-libqt5
 qt5-concurrent
 qt5-core
 qt5-dbus
