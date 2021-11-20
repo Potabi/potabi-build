@@ -9,8 +9,9 @@ install_ayras(){
     cd ${release}/usr/local/tmp/ayras
     cat ${pkgdir}/${tag}.${desktop}.${platform} | xargs pkg install -y
     chroot ${release} pkg install -y gcc
-    chroot ${release} cd /usr/local/tmp/ayras && qmake-qt5 -spec freebsd-g++ && ls
-    chroot ${release} cd /usr/local/tmp/ayras && make && ls
-    chroot ${release} cd /usr/local/tmp/ayras && make install && ls
+    cd ${release}/usr/local/tmp/ayras
+    qmake-qt5 -spec freebsd-g++ DESTDIR=${release}
+    make
+    make install
     exit 1
 }
