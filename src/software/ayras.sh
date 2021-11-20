@@ -7,8 +7,7 @@ install_ayras(){
     mkdir -pv ${release}/usr/lib/qt5/bin
     ln ${release}/usr/local/bin/qmake ${release}/usr/lib/qt5/bin/qmake
     cd ${release}/usr/local/tmp/ayras
-    chroot ${release} export QMAKESPEC=freebsd-g++ && ls
-    chroot ${release} cd /usr/local/tmp/ayras && qmake && ls
+    chroot ${release} cd /usr/local/tmp/ayras && qmake -spec freebsd-g++ && ls
     chroot ${release} cd /usr/local/tmp/ayras && make && ls
     chroot ${release} cd /usr/local/tmp/ayras && make install && ls
     exit 1
