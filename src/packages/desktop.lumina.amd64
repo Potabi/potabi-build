@@ -42,6 +42,7 @@ qt5-linguist
 qt5-qmake
 qmake
 desktop-file-utils
+gcc
 gstreamer1-qt5
 gstreamer1-plugins-gl
 poppler-qt5
