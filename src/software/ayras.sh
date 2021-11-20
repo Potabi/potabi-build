@@ -12,5 +12,4 @@ install_ayras(){
     chroot ${release} cd /usr/local/tmp/ayras && qmake-qt5 -spec freebsd-g++ && ls
     chroot ${release} cd /usr/local/tmp/ayras && make && ls
     chroot ${release} cd /usr/local/tmp/ayras && make install && ls
-    exit 1
 }
