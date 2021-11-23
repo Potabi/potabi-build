@@ -15,3 +15,12 @@ Port `-y` equiv
 ```sh
 make install clean BATCH=yes
 ```
+
+Read ports list
+```sh
+cat /path/to/list
+while read line
+do
+    # stuff
+done
+```
