@@ -1,5 +1,7 @@
 General notes and ideas for mid-development crap.
 
+MAKE SURE TO SET DATE BEFORE RUNNING SCRIPT
+
 Getting port packages
 ```sh
 git clone https://github.com/potabi/ports
@@ -23,4 +25,11 @@ while read line
 do
     # stuff
 done
+```
+
+Install ports
+```sh
+pkg install -y ncurses
+portsnap fetch extract
+mkdir -pv /usr/ports/distfiles
 ```
