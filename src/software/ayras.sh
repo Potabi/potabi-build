@@ -1,17 +1,8 @@
 install_ayras(){
-    git clone https://github.com/Potabi/ayras ${release}/usr/local/tmp/ayras
-    pkg install -y qt5-qmake qmake trueos-libqt5 | true # Ensure Qmake is on the host system
-    mkdir -pv /usr/lib/qt5
-    mkdir -pv /usr/lib/qt5/bin
-    mkdir -pv ${release}/usr/lib/qt5
-    mkdir -pv ${release}/usr/lib/qt5/bin
-    ln ${release}/usr/local/bin/qmake ${release}/usr/lib/qt5/bin/qmake
-    cd ${release}/usr/local/tmp/ayras
-    cat ${pkgdir}/${tag}.${desktop}.${platform} | xargs pkg install -y
-    chroot ${release} pkg install -y gcc
-    cd ${release}/usr/local/tmp/ayras
-    qmake-qt5 -spec freebsd-g++ DESTDIR=${release}
-    make
-    make install
-    exit 1
+    # Yes, I know I fucked up on the release numbers when making these. 
+    # Oh well. At least we know for a while that these have to be the 
+    # packages I made because only I am stupid enough to let this happen.
+
+    pkg -c ${release} install -y ${sftdir}/pkg/ayras-coreutils-1.6.3.pkg
+    pkg -c ${release} install -y ${sftdir}/pkg/lumina-core-1.6.3_1.pkg
 }
