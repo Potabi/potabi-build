@@ -3,6 +3,9 @@ install_ayras(){
     # Oh well. At least we know for a while that these have to be the 
     # packages I made because only I am stupid enough to let this happen
 
-    pkg -c ${release} install -y ${sftdir}/pkg/ayras-coreutils-1.6.3.pkg
-    pkg -c ${release} install -y ${sftdir}/pkg/lumina-core-1.6.3_1.pkg
+    cp ${sftdir}/pkg/ayras-coreutils-1.6.3.pkg ${release}/usr/local/tmp/ayras-coreutils-1.6.3.pkg
+    cp ${sftdir}/pkg/lumina-core-1.6.3_1.pkg ${release}/usr/local/tmp/lumina-core-1.6.3_1.pkg
+
+    chroot ${release} pkg install -y /usr/local/tmp/ayras-coreutils-1.6.3.pkg
+    chroot ${release} pkg install -y /usr/local/tmp/lumina-core-1.6.3_1.pkg
 }
