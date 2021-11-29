@@ -5,7 +5,7 @@ zenity
 sysctlview
 xterm
 doas
-py-gobject3
+py38-gobject3
 fd-find
 tealdeer
 rustscan
