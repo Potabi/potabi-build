@@ -4,7 +4,7 @@
 . ${sftdir}/doas.sh
 . ${sftdir}/ayras.sh
 . ${sftdir}/package.sh
-
+. ${sftdir}/ptbinst.sh
 
 setup_software(){
     mkdir -pv ${release}/usr/local/tmp # This is where many things to go get tested for compile
