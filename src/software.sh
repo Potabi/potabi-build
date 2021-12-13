@@ -13,4 +13,5 @@ setup_software(){
     install_vlang
     install_doas
     install_package
+    install_potabi-installer
 }

@@ -1,12 +1,7 @@
 install_potabi-installer(){
-    mkdir -pv ${release}/usr/local/potabi | true
-    cd ${release}/usr/local/potabi
-    fetch https://github.com/ghostbsd/pc-sysinstall/archive/refs/heads/master.zip -o pc-sysinstall.zip
-    fetch https://github.com/potabi/potabi-installer/archive/refs/heads/master.zip -o potabi-installer.zip
-    unzip -d pc-sysinstall pc-sysinstall.zip
-    unzip -d potabi-installer potabi-installer.zip
-    cd ${release}/usr/local/potabi/pc-sysinstall
-    chroot ${release} make install
-    cd ${release}/usr/local/potabi/potabi-installer
-    chroot ${release} python3.8 setup.py install
+    cp ${sftdir}/pkg/pc-sysinstall-2021041900,1.pkg ${release}/usr/local/tmp/pc-sysinstall-2021041900,1.pkg
+    cp ${sftdir}/pkg/potabi-installer-ptbi.9.6.pkg ${release}/usr/local/tmp/potabi-installer-ptbi.9.6.pkg
+
+    chroot ${release} pkg install -y /usr/local/tmp/pc-sysinstall-2021041900,1.pkg
+    chroot ${release} pkg install -y /usr/local/tmp/potabi-installer-ptbi.9.6.pkg
 }
