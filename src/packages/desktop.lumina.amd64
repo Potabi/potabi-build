@@ -6,6 +6,7 @@ sysctlview
 xterm
 doas
 py38-gobject3
+py38-qt5
 fd-find
 tealdeer
 rustscan
@@ -16,6 +17,7 @@ xcb-util
 libXcursor
 libglvnd
 trueos-libqt5
+python
 qt5-concurrent
 qt5-core
 qt5-dbus
