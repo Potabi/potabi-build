@@ -4,7 +4,8 @@
 . ${sftdir}/doas.sh
 . ${sftdir}/ayras.sh
 . ${sftdir}/package.sh
-. ${sftdir}/ptbinst.sh
+# Add PCLI first, before building the proper installer
+# . ${sftdir}/ptbinst.sh
 
 setup_software(){
     mkdir -pv ${release}/usr/local/tmp # This is where many things to go get tested for compile
@@ -13,5 +14,5 @@ setup_software(){
     install_vlang
     install_doas
     install_package
-    install_potabi-installer
+    # install_potabi-installer
 }
